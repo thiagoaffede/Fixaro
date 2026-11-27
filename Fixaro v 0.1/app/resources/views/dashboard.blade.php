@@ -1,59 +1,62 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
+    @php $user = Auth::user(); @endphp
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    <p class="mb-4">{{ __("¡Hola, :name! Bienvenido a Fixaro.", ['name' => Auth::user()->name]) }}</p>
-                    
-                    @if(session('success'))
-                        <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50" role="alert">
-                            {{ session('success') }}
-                        </div>
-                    @endif
+    <div class="mx-auto max-w-5xl space-y-8 px-4 pt-5 sm:px-6 sm:pt-8">
+        @if($user->role === 'client')
+            {{-- Hero de pedido --}}
+            <section class="relative overflow-hidden rounded-4xl bg-gradient-to-br from-brand-600 to-brand-800 p-6 text-white shadow-lift sm:p-8">
+                <div class="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-white/10"></div>
+                <div class="pointer-events-none absolute -bottom-20 right-10 h-40 w-40 rounded-full bg-urgent-500/30 blur-2xl"></div>
 
-                    @if(Auth::user()->role === 'client')
-                        <div class="mt-6">
-                            <a href="{{ route('client.problem.new') }}" class="inline-flex items-center px-6 py-3 bg-indigo-600 border border-transparent rounded-md font-semibold text-white uppercase tracking-widest hover:bg-indigo-500 focus:bg-indigo-500 active:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 mb-6 mr-4">
-                                🛠️ Pedir un Profesional Ahora
-                            </a>
-                            <a href="{{ route('chats') }}" class="inline-flex items-center px-6 py-3 bg-white border border-gray-300 rounded-md font-semibold text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 transition ease-in-out duration-150 mb-6 relative">
-                                💬 Mis Chats
-                                @if(Auth::user()->unreadMessagesCount() > 0)
-                                    <span class="absolute -top-2 -right-2 flex h-5 w-5">
-                                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-                                        <span class="relative inline-flex rounded-full h-5 w-5 bg-indigo-600 items-center justify-center text-white text-[10px]">
-                                            {{ Auth::user()->unreadMessagesCount() }}
-                                        </span>
-                                    </span>
-                                @endif
-                            </a>
-                            
-                            @livewire('client.client-dashboard')
-                        </div>
-                    @elseif(Auth::user()->role === 'professional')
-                        <div class="mt-6">
-                            <a href="{{ route('chats') }}" class="inline-flex items-center px-6 py-3 bg-indigo-600 border border-transparent rounded-md font-semibold text-white uppercase tracking-widest hover:bg-indigo-500 focus:bg-indigo-500 active:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 mb-6 relative">
-                                💬 Mis Chats
-                                @if(Auth::user()->unreadMessagesCount() > 0)
-                                    <span class="absolute -top-2 -right-2 flex h-5 w-5">
-                                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-                                        <span class="relative inline-flex rounded-full h-5 w-5 bg-red-600 items-center justify-center text-white text-[10px]">
-                                            {{ Auth::user()->unreadMessagesCount() }}
-                                        </span>
-                                    </span>
-                                @endif
-                            </a>
-                            @livewire('professional.problem-feed')
-                        </div>
-                    @endif
+                <p class="text-sm font-semibold text-brand-100">Hola, {{ $user->name }} 👋</p>
+                <h1 class="mt-1 max-w-md text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl">¿Qué se rompió hoy?</h1>
+                <p class="mt-2 max-w-md text-sm text-brand-100">Contanos el problema y te asignamos un técnico verificado cerca tuyo.</p>
+
+                <a href="{{ route('client.problem.new') }}" class="btn btn-urgent btn-lg mt-6 w-full sm:w-auto">
+                    <x-icon name="bolt" class="h-5 w-5" /> Pedir ayuda ahora
+                </a>
+
+                <div class="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-xs font-semibold text-brand-100">
+                    <span class="flex items-center gap-1.5"><x-icon name="shield" class="h-4 w-4" /> Técnicos verificados</span>
+                    <span class="flex items-center gap-1.5"><x-icon name="clock" class="h-4 w-4" /> Respuesta en minutos</span>
                 </div>
-            </div>
-        </div>
+            </section>
+
+            {{-- Rubros --}}
+            <section>
+                <h2 class="section-title mb-3">¿Con qué te ayudamos?</h2>
+                <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                    @foreach([
+                        ['Plomero', 'Plomería', 'Pérdidas, canillas, cloacas'],
+                        ['Electricista', 'Electricidad', 'Cortes, térmicas, enchufes'],
+                        ['Cerrajero', 'Cerrajería', 'Aperturas y cerraduras'],
+                        ['Flete', 'Fletes', 'Mudanzas y traslados'],
+                    ] as [$cat, $label, $hint])
+                        <a href="{{ route('client.problem.new') }}" class="card group flex flex-col gap-3 p-4 transition hover:-translate-y-0.5 hover:shadow-lift active:scale-[0.98]">
+                            <x-trade-icon :category="$cat" />
+                            <div>
+                                <div class="font-bold text-ink-900">{{ $label }}</div>
+                                <div class="mt-0.5 text-xs leading-snug text-ink-400">{{ $hint }}</div>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+            </section>
+
+            @livewire('client.client-dashboard')
+
+        @elseif($user->role === 'professional')
+            <section class="flex items-center justify-between gap-4">
+                <div>
+                    <p class="text-sm font-semibold text-ink-400">Hola, {{ $user->name }} 👋</p>
+                    <h1 class="text-2xl font-extrabold tracking-tight text-ink-900 sm:text-3xl">Tu panel de trabajos</h1>
+                </div>
+                <a href="{{ route('chats') }}" class="btn btn-secondary hidden sm:inline-flex">
+                    <x-icon name="chat" class="h-4 w-4" /> Mensajes
+                </a>
+            </section>
+
+            @livewire('professional.problem-feed')
+        @endif
     </div>
 </x-app-layout>

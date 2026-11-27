@@ -1,189 +1,166 @@
-<div>
-    <div class="max-w-xl mx-auto p-4 sm:p-6 lg:p-8 bg-white shadow rounded-lg mt-6">
-        <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Publicar un Problema</h2>
+<div class="mx-auto max-w-xl px-4 pt-5 sm:px-6 sm:pt-8">
+    @php
+        $steps = [1 => ['Foto', 'Mostranos el problema'], 2 => ['Detalles', '¿Qué está pasando?'], 3 => ['Ubicación', '¿Dónde tiene que ir el técnico?']];
+    @endphp
 
-        <!-- Progress Bar -->
-        <div class="mb-8">
-            <div class="flex items-center justify-between">
-                <div class="w-1/3 text-center">
-                    <div class="w-8 h-8 mx-auto rounded-full flex items-center justify-center {{ $step >= 1 ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-600' }}">1</div>
-                    <div class="text-xs mt-2 {{ $step >= 1 ? 'text-indigo-600 font-bold' : 'text-gray-500' }}">Foto</div>
-                </div>
-                <div class="w-1/3 text-center">
-                    <div class="w-8 h-8 mx-auto rounded-full flex items-center justify-center {{ $step >= 2 ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-600' }}">2</div>
-                    <div class="text-xs mt-2 {{ $step >= 2 ? 'text-indigo-600 font-bold' : 'text-gray-500' }}">Detalles</div>
-                </div>
-                <div class="w-1/3 text-center">
-                    <div class="w-8 h-8 mx-auto rounded-full flex items-center justify-center {{ $step >= 3 ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-600' }}">3</div>
-                    <div class="text-xs mt-2 {{ $step >= 3 ? 'text-indigo-600 font-bold' : 'text-gray-500' }}">Ubicación</div>
-                </div>
-            </div>
-            <div class="relative mt-2">
-                <div class="absolute inset-0 flex items-center" aria-hidden="true">
-                    <div class="w-full border-t border-gray-300"></div>
-                </div>
-            </div>
+    {{-- Encabezado y progreso --}}
+    <div class="mb-6">
+        <div class="flex items-center justify-between">
+            <a href="{{ route('dashboard') }}" class="btn btn-ghost btn-sm -ml-2">
+                <x-icon name="arrow-left" class="h-4 w-4" /> Volver
+            </a>
+            <span class="text-xs font-bold uppercase tracking-wider text-ink-400">Paso {{ $step }} de 3</span>
         </div>
+        <div class="mt-3 grid grid-cols-3 gap-1.5" aria-hidden="true">
+            @foreach($steps as $n => $info)
+                <div class="h-1.5 rounded-full transition-colors {{ $step >= $n ? 'bg-urgent-500' : 'bg-ink-200' }}"></div>
+            @endforeach
+        </div>
+        <h1 class="mt-5 text-2xl font-extrabold tracking-tight text-ink-900 sm:text-3xl">{{ $steps[$step][1] }}</h1>
+    </div>
 
+    <div class="card p-5 sm:p-6">
         <form wire:submit.prevent="submit">
-            
-            <!-- STEP 1: Photo -->
+
+            <!-- PASO 1: Foto -->
             @if ($step == 1)
-                <div class="space-y-6">
+                <div class="space-y-5">
+                    <p class="text-sm text-ink-500">Con una foto el técnico puede darte un diagnóstico y un precio más preciso. Es opcional.</p>
+
                     <div>
-                        <x-input-label for="photo" :value="__('Sube una foto del problema (Opcional pero recomendado)')" />
-                        <div class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
-                            <div class="text-center">
-                                @if ($photo)
-                                    <img src="{{ $photo->temporaryUrl() }}" class="mx-auto h-32 w-auto rounded" alt="Preview">
-                                    <button type="button" wire:click="$set('photo', null)" class="mt-2 text-sm text-red-600 hover:text-red-500">Quitar foto</button>
-                                @else
-                                    <svg class="mx-auto h-12 w-12 text-gray-300" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                                        <path fill-rule="evenodd" d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z" clip-rule="evenodd" />
-                                    </svg>
-                                    <div class="mt-4 flex text-sm leading-6 text-gray-600 justify-center">
-                                        <label for="photo" class="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
-                                            <span>Seleccionar archivo</span>
-                                            <input id="photo" wire:model="photo" type="file" class="sr-only" accept="image/*">
-                                        </label>
-                                    </div>
-                                    <p class="text-xs leading-5 text-gray-600">PNG, JPG, GIF hasta 5MB</p>
-                                @endif
+                        @if ($photo)
+                            <div class="relative overflow-hidden rounded-3xl bg-ink-100">
+                                <img src="{{ $photo->temporaryUrl() }}" class="max-h-72 w-full object-cover" alt="Vista previa">
+                                <button type="button" wire:click="$set('photo', null)" class="btn btn-secondary btn-sm absolute right-3 top-3 shadow-sm">
+                                    <x-icon name="x" class="h-4 w-4" /> Quitar
+                                </button>
                             </div>
-                        </div>
-                        <div wire:loading wire:target="photo" class="mt-2 text-sm text-indigo-600">Cargando imagen...</div>
+                        @else
+                            <label for="photo" class="flex cursor-pointer flex-col items-center justify-center rounded-3xl border-2 border-dashed border-ink-200 bg-ink-50 px-6 py-12 text-center transition hover:border-brand-400 hover:bg-brand-50/50">
+                                <span class="flex h-16 w-16 items-center justify-center rounded-2xl bg-white text-brand-600 shadow-card">
+                                    <x-icon name="camera" class="h-8 w-8" />
+                                </span>
+                                <span class="mt-4 font-bold text-ink-900">Sacá o subí una foto</span>
+                                <span class="mt-1 text-xs text-ink-400">JPG o PNG, hasta 5 MB</span>
+                                <input id="photo" wire:model="photo" type="file" class="sr-only" accept="image/*" capture="environment">
+                            </label>
+                        @endif
+                        <div wire:loading wire:target="photo" class="mt-3 text-sm font-semibold text-brand-600">Subiendo foto…</div>
                         <x-input-error :messages="$errors->get('photo')" class="mt-2" />
                     </div>
 
-                    <div class="flex justify-end">
-                        <x-primary-button type="button" wire:click="nextStep">
-                            {{ __('Siguiente') }}
-                        </x-primary-button>
-                    </div>
+                    <button type="button" wire:click="nextStep" class="btn btn-primary btn-lg w-full">
+                        {{ $photo ? 'Continuar' : 'Seguir sin foto' }} <x-icon name="arrow-right" class="h-5 w-5" />
+                    </button>
                 </div>
             @endif
 
-            <!-- STEP 2: Description -->
+            <!-- PASO 2: Descripción -->
             @if ($step == 2)
-                <div class="space-y-6">
+                <div class="space-y-5">
                     <div>
-                        <x-input-label for="description" :value="__('Describe el problema (Obligatorio)')" />
-                        <p class="text-sm text-gray-500 mb-2">Sé lo más detallado posible para recibir presupuestos más precisos.</p>
-                        <textarea wire:model="description" id="description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Ej: Hay una fuga de agua debajo de la bacha de la cocina que empezó ayer..."></textarea>
+                        <label for="description" class="label">Contalo en pocas palabras</label>
+                        <textarea wire:model="description" id="description" rows="4" class="field resize-none" placeholder="Ej: Pierde agua debajo de la bacha de la cocina desde ayer. Ya cerré la llave de paso."></textarea>
                         <x-input-error :messages="$errors->get('description')" class="mt-2" />
                     </div>
 
-                    <div class="flex items-start">
-                        <div class="flex items-center h-5">
-                            <input id="is_urgent" wire:model="is_urgent" type="checkbox" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-indigo-300 text-indigo-600">
-                        </div>
-                        <label for="is_urgent" class="ml-2 text-sm font-medium text-gray-900">¿Es una urgencia?</label>
-                    </div>
-                    <p class="text-xs text-gray-500 ml-6">Márcalo solo si necesitas asistencia inmediata (puede incurrir en costos adicionales por urgencia).</p>
+                    <label for="is_urgent" class="flex cursor-pointer items-start gap-3 rounded-2xl p-4 ring-1 ring-inset transition {{ $is_urgent ? 'bg-urgent-50 ring-urgent-200' : 'bg-white ring-ink-200' }}">
+                        <input id="is_urgent" wire:model.live="is_urgent" type="checkbox" class="mt-0.5 h-5 w-5 rounded-md border-ink-300 text-urgent-500 focus:ring-urgent-200">
+                        <span>
+                            <span class="flex items-center gap-1.5 font-bold text-ink-900"><x-icon name="bolt" class="h-4 w-4 text-urgent-500" /> Es una urgencia</span>
+                            <span class="mt-0.5 block text-xs text-ink-500">Priorizamos tu pedido. Puede tener un recargo por atención inmediata.</span>
+                        </span>
+                    </label>
 
-                    <div class="flex justify-between">
-                        <button type="button" wire:click="previousStep" class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 transition ease-in-out duration-150">
-                            Atrás
+                    <div class="flex gap-3">
+                        <button type="button" wire:click="previousStep" class="btn btn-secondary btn-lg">
+                            <x-icon name="arrow-left" class="h-5 w-5" />
                         </button>
-                        <x-primary-button type="button" wire:click="nextStep">
-                            {{ __('Siguiente') }}
-                        </x-primary-button>
+                        <button type="button" wire:click="nextStep" class="btn btn-primary btn-lg flex-1">
+                            Continuar <x-icon name="arrow-right" class="h-5 w-5" />
+                        </button>
                     </div>
                 </div>
             @endif
 
-            <!-- STEP 3: Location and Category Confirmation -->
+            <!-- PASO 3: Ubicación y rubro -->
             @if ($step == 3)
-                <div class="space-y-6" x-data="locationPicker()">
+                <div class="space-y-5" x-data="locationPicker()">
                     <div>
-                        <x-input-label for="address" :value="__('¿Dónde se encuentra el problema?')" />
-                            <!-- Google Places Style Suggestions List -->
-                            <div class="border border-gray-300 rounded shadow-sm overflow-hidden mt-1 focus-within:ring-2 focus-within:ring-indigo-500 focus-within:border-indigo-500 transition-all">
-                                <input 
-                                    type="text" 
-                                    x-model="query" 
+                        <label for="address" class="label">Dirección</label>
+                        <div class="overflow-hidden rounded-2xl bg-white ring-1 ring-inset ring-ink-200 transition focus-within:ring-2 focus-within:ring-brand-600">
+                            <div class="flex items-center gap-2 px-4">
+                                <x-icon name="map-pin" class="h-5 w-5 text-ink-400" />
+                                <input
+                                    id="address"
+                                    type="text"
+                                    x-model="query"
                                     @input.debounce.300ms="searchAddress()"
-                                    placeholder="Ingrese una ubicación"
-                                    class="w-full border-0 focus:ring-0 p-3 text-base"
+                                    placeholder="Calle y número"
+                                    class="w-full rounded-none border-0 bg-transparent px-0 py-3 text-base text-ink-900 shadow-none placeholder:text-ink-300 focus:ring-0"
                                     autocomplete="off"
                                 >
-                                
-                                <div x-show="suggestions.length > 0" class="border-t border-gray-200 divide-y divide-gray-100 bg-white">
-                                    <template x-for="suggestion in suggestions" :key="suggestion.place_id">
-                                        <button 
-                                            type="button"
-                                            @click="selectAddress(suggestion)"
-                                            class="w-full text-left px-3 py-2.5 hover:bg-gray-50 flex items-start space-x-3 transition-colors group"
-                                        >
-                                            <div class="mt-0.5">
-                                                <svg class="w-4 h-4 text-gray-400 group-hover:text-gray-600" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
-                                                </svg>
-                                            </div>
-                                            <div class="leading-tight">
-                                                <span x-text="suggestion.formatted_primary" class="font-bold text-gray-800 text-sm"></span>
-                                                <span x-text="suggestion.formatted_secondary" class="text-gray-400 text-xs ml-1"></span>
-                                            </div>
-                                        </button>
-                                    </template>
-                                </div>
+                                <span x-show="loading" class="text-[10px] font-bold uppercase text-ink-300 animate-pulse">Buscando</span>
+                            </div>
 
-                                <div x-show="loading" class="bg-gray-50 px-3 py-1 border-t border-gray-100 flex justify-end">
-                                    <span class="text-[10px] text-gray-400 animate-pulse uppercase font-semibold">Buscando...</span>
-                                </div>
-
-                                <div class="bg-white px-3 py-1.5 border-t border-gray-100 flex justify-end items-center space-x-1 opacity-50">
-                                    <span class="text-[9px] text-gray-400">powered by</span>
-                                    <span class="text-[9px] font-bold text-gray-600">OpenStreetMap</span>
-                                </div>
+                            <div x-show="suggestions.length > 0" x-cloak class="divide-y divide-ink-100 border-t border-ink-100">
+                                <template x-for="suggestion in suggestions" :key="suggestion.place_id">
+                                    <button
+                                        type="button"
+                                        @click="selectAddress(suggestion)"
+                                        class="flex w-full items-start gap-3 px-4 py-3 text-left transition hover:bg-brand-50"
+                                    >
+                                        <svg class="mt-0.5 h-4 w-4 shrink-0 text-brand-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" /></svg>
+                                        <span class="leading-tight">
+                                            <span x-text="suggestion.formatted_primary" class="block text-sm font-bold text-ink-900"></span>
+                                            <span x-text="suggestion.formatted_secondary" class="text-xs text-ink-400"></span>
+                                        </span>
+                                    </button>
+                                </template>
+                                <div class="px-4 py-1.5 text-right text-[10px] text-ink-300">Datos © OpenStreetMap</div>
                             </div>
                         </div>
                         <x-input-error :messages="$errors->get('address')" class="mt-2" />
                         @if($errors->has('lat') || $errors->has('lng'))
-                            <p class="text-sm text-red-600 mt-2">Por favor, selecciona una dirección válida de la lista desplegable.</p>
+                            <p class="mt-2 text-sm font-medium text-red-600">Elegí una dirección de la lista para ubicarte en el mapa.</p>
                         @endif
-                    <!-- End of address container -->
+                    </div>
 
-                    <!-- Map Preview -->
-                    <div x-show="lat" class="space-y-2">
-                        <div class="flex items-center justify-between">
-                            <span class="text-sm font-medium text-gray-700">Vista previa de ubicación</span>
-                            <span class="text-xs text-indigo-600 bg-indigo-50 px-2 py-1 rounded-full flex items-center">
-                                <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.9L10 1.55l7.834 3.35a1 1 0 01.666.92v6.57a1 1 0 01-.17.56l-8.334 11.2a1 1 0 01-1.66 0L.17 12.94a1 1 0 01-.17-.56V5.82a1 1 0 01.666-.92zM10 3.167L3.5 5.952V12.15l6.5 8.735 6.5-8.735V5.952L10 3.167zM10 6a2 2 0 100 4 2 2 0 000-4z" clip-rule="evenodd"></path></svg>
-                                Privacidad Protegida
-                            </span>
-                        </div>
-                        <div id="map" class="h-48 w-full rounded-lg border shadow-inner z-0" wire:ignore></div>
-                        <p class="text-[10px] text-gray-500 italic">
-                            * Los profesionales solo verán el círculo azul (zona aproximada) hasta que aceptes su oferta.
+                    <!-- Vista previa del mapa -->
+                    <div x-show="lat" x-cloak class="space-y-2">
+                        <div id="map" class="h-48 w-full rounded-3xl ring-1 ring-ink-100 z-0" wire:ignore></div>
+                        <p class="flex items-start gap-2 text-xs text-ink-500">
+                            <x-icon name="lock" class="mt-0.5 h-3.5 w-3.5 text-brand-600" />
+                            Tu dirección exacta queda privada. Los técnicos solo ven la zona aproximada hasta que aceptes una oferta.
                         </p>
                     </div>
 
-                    <div class="p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50" role="alert">
-                        <span class="font-medium">Sugerencia Inteligente:</span> Basado en tu descripción, creemos que necesitas un <strong>{{ $category }}</strong>.
-                    </div>
-
-                    <div>
-                        <x-input-label for="category" :value="__('¿Es correcta esta categoría?')" />
-                        <select wire:model="category" id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 mt-1">
-                            <option value="Plomero">Plomero</option>
-                            <option value="Electricista">Electricista</option>
-                            <option value="Gasista">Gasista</option>
-                            <option value="Cerrajero">Cerrajero</option>
-                            <option value="Albañil">Albañil</option>
-                            <option value="Aire Acondicionado">Aire Acondicionado</option>
-                            <option value="General">Reparaciones Generales</option>
-                        </select>
+                    <div class="rounded-2xl bg-brand-50 p-4">
+                        <div class="flex items-center gap-3">
+                            <x-trade-icon :category="$category" size="sm" />
+                            <div class="flex-1">
+                                <p class="text-xs font-semibold text-brand-700">Según tu descripción, necesitás un</p>
+                                <select wire:model="category" id="category" class="-ml-1 mt-0.5 w-full rounded-xl border-0 bg-transparent py-1 pl-1 pr-8 text-base font-extrabold text-ink-900 focus:ring-2 focus:ring-brand-600">
+                                    <option value="Plomero">Plomero</option>
+                                    <option value="Electricista">Electricista</option>
+                                    <option value="Gasista">Gasista</option>
+                                    <option value="Cerrajero">Cerrajero</option>
+                                    <option value="Albañil">Albañil</option>
+                                    <option value="Aire Acondicionado">Aire Acondicionado</option>
+                                    <option value="General">Reparaciones Generales</option>
+                                </select>
+                            </div>
+                        </div>
                         <x-input-error :messages="$errors->get('category')" class="mt-2" />
                     </div>
 
-                    <div class="flex justify-between">
-                        <button type="button" wire:click="previousStep" class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 transition ease-in-out duration-150">
-                            Atrás
+                    <div class="flex gap-3">
+                        <button type="button" wire:click="previousStep" class="btn btn-secondary btn-lg">
+                            <x-icon name="arrow-left" class="h-5 w-5" />
                         </button>
-                        <x-primary-button type="submit" class="bg-green-600 hover:bg-green-500 focus:bg-green-700 active:bg-green-800 focus:ring-green-500">
-                            {{ __('Publicar Problema') }}
-                        </x-primary-button>
+                        <button type="submit" class="btn btn-urgent btn-lg flex-1" wire:loading.attr="disabled" wire:target="submit">
+                            <x-icon name="bolt" class="h-5 w-5" /> Pedir técnico
+                        </button>
                     </div>
                 </div>
             @endif
@@ -296,8 +273,8 @@
                         this.marker = L.marker([this.lat, this.lng]).addTo(this.map);
                         
                         this.circle = L.circle([this.lat, this.lng], {
-                            color: '#4f46e5',
-                            fillColor: '#4f46e5',
+                            color: '#0A5CFF',
+                            fillColor: '#0A5CFF',
                             fillOpacity: 0.2,
                             radius: 400
                         }).addTo(this.map);

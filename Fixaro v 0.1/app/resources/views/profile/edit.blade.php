@@ -1,29 +1,23 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Profile') }}
-        </h2>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-profile-information-form')
-                </div>
+    <div class="mx-auto max-w-2xl space-y-4 px-4 pt-5 sm:px-6 sm:pt-8">
+        <div class="mb-2 flex items-center gap-4">
+            <x-avatar :name="Auth::user()->name" size="lg" />
+            <div>
+                <h1 class="text-2xl font-extrabold tracking-tight text-ink-900">{{ Auth::user()->name }} {{ Auth::user()->surname }}</h1>
+                <p class="text-sm text-ink-400">{{ Auth::user()->role === 'client' ? 'Cliente' : 'Técnico' }} · {{ Auth::user()->phone }}</p>
             </div>
+        </div>
 
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-password-form')
-                </div>
-            </div>
+        <div class="card p-5 sm:p-8">
+            @include('profile.partials.update-profile-information-form')
+        </div>
 
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.delete-user-form')
-                </div>
-            </div>
+        <div class="card p-5 sm:p-8">
+            @include('profile.partials.update-password-form')
+        </div>
+
+        <div class="card p-5 sm:p-8">
+            @include('profile.partials.delete-user-form')
         </div>
     </div>
 </x-app-layout>

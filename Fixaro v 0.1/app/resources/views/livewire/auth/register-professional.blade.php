@@ -1,86 +1,86 @@
 <div>
-    <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Registro de Profesional</h2>
+    <div class="mb-6">
+        <h1 class="text-2xl font-extrabold tracking-tight text-ink-900">Sumate como técnico</h1>
+        <p class="mt-1 text-sm text-ink-500">Recibí pedidos de tu zona y cobrá seguro.</p>
+    </div>
     
-    <form wire:submit="register">
+    <form wire:submit="register" class="space-y-4">
         <!-- Name -->
         <div>
             <x-input-label for="name" :value="__('Nombre')" />
-            <x-text-input wire:model="name" id="name" class="block mt-1 w-full" type="text" required autofocus autocomplete="name" />
+            <x-text-input wire:model="name" id="name" type="text" required autofocus autocomplete="name" />
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
 
         <!-- Surname -->
-        <div class="mt-4">
+        <div>
             <x-input-label for="surname" :value="__('Apellido')" />
-            <x-text-input wire:model="surname" id="surname" class="block mt-1 w-full" type="text" required autocomplete="family-name" />
+            <x-text-input wire:model="surname" id="surname" type="text" required autocomplete="family-name" />
             <x-input-error :messages="$errors->get('surname')" class="mt-2" />
         </div>
 
         <!-- Phone -->
-        <div class="mt-4">
-            <x-input-label for="phone" :value="__('Teléfono / Celular (Obligatorio)')" />
-            <x-text-input wire:model="phone" id="phone" class="block mt-1 w-full" type="text" required autocomplete="tel" />
+        <div>
+            <x-input-label for="phone" :value="__('Celular')" />
+            <x-text-input wire:model="phone" id="phone" type="tel" inputmode="tel" placeholder="291 555 0000" required autocomplete="tel" />
             <x-input-error :messages="$errors->get('phone')" class="mt-2" />
         </div>
 
         <!-- Email -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email (Opcional)')" />
-            <x-text-input wire:model="email" id="email" class="block mt-1 w-full" type="email" autocomplete="username" />
+        <div>
+            <x-input-label for="email" :value="__('Email (opcional)')" />
+            <x-text-input wire:model="email" id="email" type="email" autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
         <!-- Password -->
-        <div class="mt-4">
+        <div>
             <x-input-label for="password" :value="__('Contraseña')" />
-            <x-text-input wire:model="password" id="password" class="block mt-1 w-full" type="password" required autocomplete="new-password" />
+            <x-text-input wire:model="password" id="password" type="password" required autocomplete="new-password" />
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
         <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirmar Contraseña')" />
-            <x-text-input wire:model="password_confirmation" id="password_confirmation" class="block mt-1 w-full" type="password" required autocomplete="new-password" />
+        <div>
+            <x-input-label for="password_confirmation" :value="__('Repetí la contraseña')" />
+            <x-text-input wire:model="password_confirmation" id="password_confirmation" type="password" required autocomplete="new-password" />
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
         <!-- Birthdate -->
-        <div class="mt-4">
-            <x-input-label for="birthdate" :value="__('Fecha de Nacimiento')" />
-            <x-text-input wire:model="birthdate" id="birthdate" class="block mt-1 w-full" type="date" required />
-            <p class="text-xs text-gray-500 mt-1">Debes ser mayor de 18 años.</p>
+        <div>
+            <x-input-label for="birthdate" :value="__('Fecha de nacimiento')" />
+            <x-text-input wire:model="birthdate" id="birthdate" type="date" required />
+            <p class="mt-1 text-xs text-ink-400">Debes ser mayor de 18 años.</p>
             <x-input-error :messages="$errors->get('birthdate')" class="mt-2" />
         </div>
 
         <!-- License Number -->
-        <div class="mt-4">
-            <x-input-label for="license_number" :value="__('Matrícula (Opcional, pero recomendado)')" />
-            <x-text-input wire:model="license_number" id="license_number" class="block mt-1 w-full" type="text" />
+        <div>
+            <x-input-label for="license_number" :value="__('Matrícula (opcional, suma confianza)')" />
+            <x-text-input wire:model="license_number" id="license_number" type="text" />
             <x-input-error :messages="$errors->get('license_number')" class="mt-2" />
         </div>
 
         <!-- Professions -->
-        <div class="mt-4">
-            <x-input-label :value="__('¿Qué oficios realizas? (Elige de 1 a 3)')" />
+        <div>
+            <x-input-label :value="__('¿Qué trabajos hacés? (1 a 3)')" />
             <div class="mt-2 grid grid-cols-2 gap-2">
                 @foreach($availableProfessions as $profession)
-                    <label class="inline-flex items-center">
-                        <input type="checkbox" wire:model="professions" value="{{ $profession }}" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500">
-                        <span class="ms-2 text-sm text-gray-600">{{ $profession }}</span>
+                    <label class="flex cursor-pointer items-center gap-2 rounded-2xl px-3 py-2.5 text-sm font-semibold text-ink-700 ring-1 ring-inset ring-ink-200 transition has-[:checked]:bg-brand-50 has-[:checked]:text-brand-700 has-[:checked]:ring-brand-600">
+                        <input type="checkbox" wire:model="professions" value="{{ $profession }}" class="h-4 w-4 rounded border-ink-300 text-brand-600 focus:ring-brand-200">
+                        {{ $profession }}
                     </label>
                 @endforeach
             </div>
             <x-input-error :messages="$errors->get('professions')" class="mt-2" />
         </div>
 
-        <div class="flex items-center justify-end mt-6">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                {{ __('¿Ya estás registrado?') }}
-            </a>
-
-            <x-primary-button class="ms-4">
-                {{ __('Registrarme') }}
-            </x-primary-button>
+        <div class="pt-2">
+            <button type="submit" class="btn btn-primary btn-lg w-full">{{ __('Crear cuenta') }}</button>
+            <p class="mt-4 text-center text-sm text-ink-500">
+                ¿Ya tenés cuenta? <a class="font-bold text-brand-600 hover:text-brand-700" href="{{ route('login') }}">Ingresá</a>
+            </p>
         </div>
     </form>
 </div>

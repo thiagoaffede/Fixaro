@@ -1,3 +1,96 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    html {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+        @apply bg-ink-50 font-sans text-ink-900 antialiased;
+    }
+
+    [x-cloak] {
+        display: none !important;
+    }
+}
+
+@layer components {
+    /* Botones */
+    .btn {
+        @apply inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-3 text-sm font-bold transition duration-150 ease-out focus:outline-none focus-visible:ring-4 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50;
+    }
+    .btn-sm {
+        @apply rounded-xl px-3.5 py-2 text-xs;
+    }
+    .btn-lg {
+        @apply px-6 py-4 text-base;
+    }
+    .btn-primary {
+        @apply bg-brand-600 text-white shadow-sm hover:bg-brand-700 focus-visible:ring-brand-200;
+    }
+    .btn-urgent {
+        @apply bg-urgent-500 text-white shadow-cta hover:bg-urgent-600 focus-visible:ring-urgent-200;
+    }
+    .btn-success {
+        @apply bg-ok-500 text-white shadow-sm hover:bg-ok-600 focus-visible:ring-ok-100;
+    }
+    .btn-secondary {
+        @apply bg-white text-ink-800 ring-1 ring-inset ring-ink-200 hover:bg-ink-50 focus-visible:ring-brand-200;
+    }
+    .btn-ghost {
+        @apply text-ink-600 hover:bg-ink-100 hover:text-ink-900 focus-visible:ring-brand-100;
+    }
+    .btn-danger {
+        @apply bg-red-600 text-white hover:bg-red-700 focus-visible:ring-red-200;
+    }
+
+    /* Superficies */
+    .card {
+        @apply rounded-3xl bg-white shadow-card ring-1 ring-ink-100;
+    }
+
+    /* Formularios */
+    .field {
+        @apply block w-full rounded-2xl border-0 bg-white px-4 py-3 text-base text-ink-900 ring-1 ring-inset ring-ink-200 placeholder:text-ink-300 transition focus:ring-2 focus:ring-inset focus:ring-brand-600 disabled:bg-ink-50 sm:text-sm;
+    }
+    .label {
+        @apply mb-1.5 block text-sm font-semibold text-ink-700;
+    }
+
+    /* Etiquetas */
+    .chip {
+        @apply inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold;
+    }
+    .chip-brand {
+        @apply bg-brand-50 text-brand-700;
+    }
+    .chip-urgent {
+        @apply bg-urgent-50 text-urgent-700;
+    }
+    .chip-ok {
+        @apply bg-ok-50 text-ok-700;
+    }
+    .chip-muted {
+        @apply bg-ink-100 text-ink-600;
+    }
+
+    .section-title {
+        @apply text-lg font-extrabold tracking-tight text-ink-900;
+    }
+
+    /* Avisos flash */
+    .alert-ok {
+        @apply flex items-start gap-3 rounded-2xl bg-ok-50 p-4 text-sm font-medium text-ok-700 ring-1 ring-ok-100;
+    }
+    .alert-error {
+        @apply flex items-start gap-3 rounded-2xl bg-red-50 p-4 text-sm font-medium text-red-700 ring-1 ring-red-100;
+    }
+}
+
+/* Leaflet dentro de tarjetas redondeadas */
+.leaflet-container {
+    font-family: inherit;
+    border-radius: 1.25rem;
+}
