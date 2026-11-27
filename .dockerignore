@@ -1,0 +1,14 @@
+.git
+Prototipo
+docs
+**/node_modules
+Fixaro v 0.1/app/vendor
+Fixaro v 0.1/app/public/build
+Fixaro v 0.1/app/public/hot
+Fixaro v 0.1/app/public/storage
+Fixaro v 0.1/app/.env
+Fixaro v 0.1/app/database/*.sqlite
+Fixaro v 0.1/app/storage/logs/*
+Fixaro v 0.1/app/storage/framework/sessions/*
+Fixaro v 0.1/app/storage/framework/views/*
+Fixaro v 0.1/app/storage/framework/cache/data/*

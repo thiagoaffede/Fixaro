@@ -196,6 +196,10 @@ npm install
 npm run dev
 ```
 
+### Deploy
+
+La app se publica gratis en Render + Neon (Postgres) y se redespliega sola con cada push a `main`. Ver [docs/deploy.md](docs/deploy.md).
+
 ---
 
 ## 📄 Licencia
