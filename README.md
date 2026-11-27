@@ -1,6 +1,6 @@
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/thiagoaffede/Fixaro/main/Fixaro%20v%200.1/app/public/favicon.svg" alt="Fixaro" width="100" />
+  <img src="Fixaro%20v%200.1/app/public/favicon.svg" alt="Fixaro" width="100" />
 </p>
 
 <h1 align="center">Fixaro</h1>
@@ -24,6 +24,14 @@
 </p>
 
 <br />
+
+<p align="center">
+  <img src="docs/diseno/portada-escritorio.png" alt="Portada de Fixaro" width="820" />
+</p>
+
+<p align="center">
+  <img src="docs/diseno/pantallas-app.png" alt="Pantallas de la app en el celular" width="820" />
+</p>
 
 ---
 
@@ -95,6 +103,20 @@ El objetivo es hacer que contratar un servicio del hogar sea tan fácil como env
 - **Cliente**: lista de problemas con estados (Abierto, Asignado, Resuelto), ofertas pendientes, chat activo
 - **Profesional**: feed de problemas abiertos (ordenados por urgentes primero), ofertas enviadas, trabajos activos
 - Badges de mensajes no leídos
+
+---
+
+## 🎨 Sistema visual
+
+| Token | Color | Uso |
+|---|---|---|
+| `brand-600` | `#0A5CFF` | Marca, confianza, acciones secundarias |
+| `urgent-500` | `#FF5A1F` | Botón principal "Pedir ayuda" y pedidos urgentes |
+| `ink-900` | `#0B1736` | Textos |
+| `ink-50` | `#F5F7FB` | Fondo |
+| `ok-500` | `#12B76A` | Asignado / resuelto |
+
+Tipografía **Plus Jakarta Sans**. Las clases reutilizables (`btn`, `btn-urgent`, `card`, `field`, `chip`…) viven en `resources/css/app.css` y los colores en `tailwind.config.js`. Componentes Blade de apoyo: `<x-icon>`, `<x-trade-icon>`, `<x-avatar>`, `<x-brand>`, `<x-flash>`.
 
 ---
 
