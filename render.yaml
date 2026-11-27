@@ -5,7 +5,7 @@ services:
     name: fixaro
     runtime: docker
     plan: free
-    region: oregon
+    region: virginia
     branch: main
     autoDeploy: true
     dockerfilePath: ./Dockerfile
