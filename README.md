@@ -1,6 +1,6 @@
 
 <p align="center">
-  <img src="Fixaro%20v%200.1/app/public/favicon.svg" alt="Fixaro" width="100" />
+  <img src="https://raw.githubusercontent.com/thiagoaffede/Fixaro/main/docs/diseno/logo.svg" alt="Fixaro" width="100" />
 </p>
 
 <h1 align="center">Fixaro</h1>
@@ -26,11 +26,11 @@
 <br />
 
 <p align="center">
-  <img src="docs/diseno/portada-escritorio.png" alt="Portada de Fixaro" width="820" />
+  <img src="https://raw.githubusercontent.com/thiagoaffede/Fixaro/main/docs/diseno/portada-escritorio.png" alt="Portada de Fixaro" width="820" />
 </p>
 
 <p align="center">
-  <img src="docs/diseno/pantallas-app.png" alt="Pantallas de la app en el celular" width="820" />
+  <img src="https://raw.githubusercontent.com/thiagoaffede/Fixaro/main/docs/diseno/pantallas-app.png" alt="Pantallas de la app en el celular" width="820" />
 </p>
 
 ---
